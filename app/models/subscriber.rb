@@ -3,4 +3,5 @@ class Subscriber < ApplicationRecord
   validates :subscribed, inclusion: { in: [true, false], message: "must be true or false" }
 
   self.implicit_order_column = "created_at"
+
 end
