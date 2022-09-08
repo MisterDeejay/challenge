@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useQueryParam, NumberParam, withDefault } from 'use-query-params';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { SecondaryButton } from './components/Button'
 import AddSubscriberModal from './components/AddSubscriberModal'
+import Alert from 'react-bootstrap/Alert';
+import AlertDismissable from './components/AlertDismissable'
 import SubscriberStatusModal from './components/SubscriberStatusModal'
 import SubscriberTable from './components/SubscriberTable'
 import TablePagination from './components/TablePagination'
@@ -25,6 +28,8 @@ function App() {
   );
   const [showAddModal, setShowAddModal] = useState(false)
   const [focusedSubscriberId, setFocusedSubscriberId] = useState('')
+  const [alertMessage, setAlertMessage] = useState('')
+  const [alertVariant, setAlertVariant] = useState('')
   const [focusedSubscriberStatus, setFocusedSubscriberStatus] = useState('')
   const [subscribers, setSubscribers] = useState([])
   const [pagination, setPagination] = useState({})
@@ -70,13 +75,29 @@ function App() {
     setShowAddModal(false)
   }
 
-  const onSuccessAddSubscriber = () => {
+  const onSuccessAddSubscriber = (success) => {
     setShowAddModal(false)
+    refreshSubscribers()
+    setAlertMessage(success)
+    setAlertVariant('success')
+    window.setTimeout(() => {
+      setAlertMessage('')
+      setAlertVariant('')
+    }, 5000)
+  }
+
+  const onFailureAddSubscriber = (error) => {
+    setAlertMessage(error)
+    setAlertVariant('danger')
+    window.setTimeout(() => {
+      setAlertMessage('')
+      setAlertVariant('')
+    }, 5000)
   }
 
   const onUpdateStatusSelectected = (subscriberId, status) => {
     setFocusedSubscriberId(subscriberId)
-    setFocusedSubscriberStatus(status)
+    setFocusedSubscriberStatus(status.toString())
   }
 
   const onCloseUpdateStatusSubscriberModal = () => {
@@ -84,9 +105,27 @@ function App() {
     setFocusedSubscriberStatus('')
   }
 
-  const onSuccessUpdateStatusSubscriber = () => {
+  const onSuccessUpdateStatusSubscriber = (success) => {
     setFocusedSubscriberId('')
     setFocusedSubscriberStatus('')
+    refreshSubscribers()
+    setAlertMessage(success)
+    setAlertVariant('success')
+    window.setTimeout(() => {
+      setAlertMessage('')
+      setAlertVariant('')
+    }, 3000)
+  }
+
+  const onFailureUpdateStatusSubscriber = (error) => {
+    setFocusedSubscriberId('')
+    setFocusedSubscriberStatus('')
+    setAlertMessage(error)
+    setAlertVariant('danger')
+    window.setTimeout(() => {
+      setAlertMessage('')
+      setAlertVariant('')
+    }, 3000)
   }
 
   return (
@@ -96,11 +135,13 @@ function App() {
           isOpen={showAddModal}
           onClose={onCloseAddSubscriberModal}
           onSuccess={onSuccessAddSubscriber}
+          onFailure={onFailureAddSubscriber}
         />
         <SubscriberStatusModal
           isOpen={focusedSubscriberId !== '' && focusedSubscriberStatus !== ''}
           onClose={onCloseUpdateStatusSubscriberModal}
           onSuccess={onSuccessUpdateStatusSubscriber}
+          onFailure={onFailureUpdateStatusSubscriber}
           subscriberId={focusedSubscriberId}
           status={focusedSubscriberStatus}
         />
@@ -112,6 +153,7 @@ function App() {
             Add Subscriber
           </SecondaryButton>
         </div>
+        <AlertDismissable message={alertMessage} variant={alertVariant} />
         <div className="mt-6">
           <SubscriberTable
             subscribers={subscribers}

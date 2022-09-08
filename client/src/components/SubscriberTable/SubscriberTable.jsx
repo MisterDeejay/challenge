@@ -15,7 +15,7 @@ const SubscriberTable = (props) => {
                   <th
                     scope="col"
                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
+                 >
                     Name
                   </th>
                   <th
@@ -45,11 +45,11 @@ const SubscriberTable = (props) => {
                     <div className="text-sm text-gray-900">{subscriber.email}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <StatusPill value={subscriber.status} />
+                      <StatusPill value={subscriber.subscribed} />
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <button className="text-primary-gold-600 hover:text-primary-gold-900 underline" onClick={() => onChangeStatusSelected(subscriber.id, subscriber.status)}>
-                        {subscriber.status === 'active' ? 'Unsubscribe' : 'Subscribe'}
+                      <button className="text-primary-gold-600 hover:text-primary-gold-900 underline" onClick={() => onChangeStatusSelected(subscriber.id, subscriber.subscribed)}>
+                        {subscriber.subscribed ? 'Unsubscribe' : 'Subscribe'}
                       </button>
                     </td>
                   </tr>
@@ -66,10 +66,10 @@ const SubscriberTable = (props) => {
 SubscriberTable.propTypes = {
   subscribers: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number,
+      id: PropTypes.string,
       email: PropTypes.string,
       name: PropTypes.string,
-      status: PropTypes.string
+      subscribed: PropTypes.bool
     })
   ),
   onChangeStatusSelected: PropTypes.func
@@ -80,4 +80,4 @@ SubscriberTable.defaultProps = {
   onChangeStatusSelected: () => {}
 }
 
-export default SubscriberTable
+export default SubscriberTable 

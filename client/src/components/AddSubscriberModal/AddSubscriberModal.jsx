@@ -6,7 +6,7 @@ import Modal, { ModalBody, ModalFooter } from '../Modal'
 import { createSubscriber } from "../../services/subscriber";
 
 const AddSubscriberModal = (props) => {
-  const { isOpen, onClose, onSuccess } = props
+  const { isOpen, onClose, onFailure, onSuccess } = props
   const [isSaving, setIsSaving] = useState(false)
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
@@ -28,11 +28,14 @@ const AddSubscriberModal = (props) => {
 
     setIsSaving(true)
     createSubscriber(payload)
-    .then(() => {
-      onSuccess()
+    .then((payload) => {
+      const msg = payload?.data?.message
+      onSuccess(msg)
     })
     .catch((payload) => {
-      const error = payload?.response?.data?.message || 'Something went wrong'
+      const errors = payload?.response?.data?.message?.errors || []
+      const error = errors.length > 0 ? errors.map(e => e.detail).join('\n') : 'Something went wrong'
+      onFailure(error)
       console.error(error)
     })
     .finally(() => {
@@ -98,6 +101,7 @@ const AddSubscriberModal = (props) => {
 AddSubscriberModal.propTypes = {
   isOpen: PropTypes.bool, 
   onClose: PropTypes.func,
+  onFailure: PropTypes.func,
   onSuccess: PropTypes.func
 }
 

@@ -79,9 +79,16 @@ GEM
       database_cleaner-core (~> 2.0.0)
       redis
     diff-lcs (1.5.0)
+    email_validator (2.2.3)
+      activemodel
     erubi (1.10.0)
     factory_bot (6.2.0)
       activesupport (>= 5.0.0)
+    factory_bot_rails (6.2.0)
+      factory_bot (~> 6.2.0)
+      railties (>= 5.0.0)
+    faker (2.20.0)
+      i18n (>= 1.8.11, < 2)
     ffi (1.15.4)
     foreman (0.87.2)
     globalid (1.0.0)
@@ -105,6 +112,10 @@ GEM
     msgpack (1.4.2)
     nio4r (2.5.8)
     nokogiri (1.13.0-arm64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.13.0-x86_64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.13.0-x86_64-linux)
       racc (~> 1.4)
     parallel (1.21.0)
     parser (3.1.0.0)
@@ -212,6 +223,8 @@ GEM
 
 PLATFORMS
   arm64-darwin-21
+  x86_64-darwin-21
+  x86_64-linux
 
 DEPENDENCIES
   bootsnap (>= 1.4.4)
@@ -219,7 +232,10 @@ DEPENDENCIES
   byebug
   database_cleaner-active_record
   database_cleaner-redis
+  email_validator
   factory_bot
+  factory_bot_rails (~> 6.2)
+  faker (~> 2.20.0)
   foreman
   listen (~> 3.3)
   mocha (~> 1.2, >= 1.2.1)

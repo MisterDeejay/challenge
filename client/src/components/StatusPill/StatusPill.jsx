@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 
 export function StatusPill({ value }) {
-  const status = value ? value.toLowerCase() : "unknown";
+  const status = value ? 'active' : 'inactive';
 
   return (
     <span

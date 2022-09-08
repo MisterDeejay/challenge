@@ -8,9 +8,14 @@ gem "pg", "~> 1.1"
 gem "puma", "~> 5.0"
 gem "rack-cors"
 gem "bootsnap", ">= 1.4.4", require: false
+gem "email_validator"
 
 group :development, :test do
   gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
+  # provides factories for objects used in specs
+  gem 'factory_bot_rails', '~> 6.2'
+  # used for tests
+  gem 'faker', '~> 2.20.0'
 end
 
 group :development, :test, :rake do
